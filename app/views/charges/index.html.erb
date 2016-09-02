@@ -1,0 +1,66 @@
+  
+<p id="notice"><%= notice %></p>
+    <div class="main">
+<h1>Pay More</h1>
+ 
+ <%= form_for (Charge.new), url: charges_path, :html => {:id => "stripe-form"}, method: 'post' do |f| %>
+  <article>
+    <% if flash[:error].present? %>
+      <div id="error_explanation">
+        <p><%= flash[:error] %></p>
+      </div>
+    <% end %>
+    <label class="amount">
+      
+    </label>
+  </article>
+                <%= f.hidden_field :email, :value => current_user.email %>
+                <%= f.hidden_field :amount, value: '10'  %>
+                <%= f.hidden_field :currency, value: 'usd' %>
+                <%= f.hidden_field :description, value: 'paid' %>
+               
+
+
+
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+          data-description="Pay More"
+          data-amount="1000"
+          data-locale="auto"></script>
+<% end %>
+   
+
+<div class="container" style="margin-top: 30px;">
+
+ 
+ 
+
+  <h1>Payment Details</h1>   
+ 
+ <div class="bs-example">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>EMAIL</th>
+                <th>AMOUNT</th>
+                <th>DATE</th>
+            </tr>
+        </thead>
+        <tbody>
+         <% @charge.each do |charge| %>
+          <tr class="active">
+                <td><%= charge.id %>
+                <td><%= charge.email %></td>
+                <td><%= charge.amount %></td>
+                <td><%= charge.created_at %></td>
+                 
+            </tr>
+         
+             <% end %>
+        </tbody>
+    </table>
+</div>
+</div>
+ 
+</div>
